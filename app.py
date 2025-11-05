@@ -10,7 +10,11 @@ from routes.relatorio import relatorio_routes
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": ["https://sistema-de-controle-financeiro-fron.vercel.app"]}})
+CORS(app, resources={r"/api/*": {"origins": ["https://sistema-de-controle-financeiro-fron.vercel.app"]}}, 
+     supports_credentials=True,
+     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+     allow_headers=["Content-Type", "Authorization"])
+
 
 app.register_blueprint(usuario_routes, url_prefix="/api")
 app.register_blueprint(contas_routes, url_prefix='/api')
