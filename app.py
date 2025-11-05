@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 import os
-from flask import Flask
+from flask import Flask, request, make_response
 from flask_cors import CORS
 from routes.usuario import usuario_routes
 from routes.contas import contas_routes
@@ -11,20 +11,25 @@ load_dotenv()
 
 app = Flask(__name__)
 
-CORS(app, 
-     resources={r"/api/*": {"origins": ["https://sistema-de-controle-financeiro-fron.vercel.app"]}},
-     supports_credentials=True,
-     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-     allow_headers=["Content-Type", "Authorization", "Access-Control-Allow-Credentials"])
+# Permitir CORS geral (com origins específicos)
+CORS(app, resources={r"/api/*": {"origins": "https://sistema-de-controle-financeiro-fron.vercel.app"}},
+     supports_credentials=True)
 
 app.register_blueprint(usuario_routes, url_prefix="/api")
 app.register_blueprint(contas_routes, url_prefix='/api')
 app.register_blueprint(metas_routes, url_prefix='/api')
 app.register_blueprint(relatorio_routes, url_prefix='/api')
 
+@app.after_request
+def after_request(response):
+    response.headers.add("Access-Control-Allow-Origin", "https://sistema-de-controle-financeiro-fron.vercel.app")
+    response.headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization")
+    response.headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+    response.headers.add("Access-Control-Allow-Credentials", "true")
+    return response
+
 @app.before_request
 def handle_options():
-    from flask import request, make_response
     if request.method == "OPTIONS":
         response = make_response()
         response.headers.add("Access-Control-Allow-Origin", "https://sistema-de-controle-financeiro-fron.vercel.app")
@@ -32,7 +37,7 @@ def handle_options():
         response.headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
         response.headers.add("Access-Control-Allow-Credentials", "true")
         return response
-         
+
 for rule in app.url_map.iter_rules():
     print(rule)
 
