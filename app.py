@@ -27,6 +27,25 @@ app.register_blueprint(contas_routes, url_prefix="/api")
 app.register_blueprint(metas_routes, url_prefix="/api")
 app.register_blueprint(relatorio_routes, url_prefix="/api")
 
+@app.after_request
+def add_cors_headers(response):
+    response.headers["Access-Control-Allow-Origin"] = "https://sistema-de-controle-financeiro-fron.vercel.app"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    return response
+
+
+@app.route("/api/<path:path>", methods=["OPTIONS"])
+def handle_options(path):
+    from flask import make_response
+    response = make_response()
+    response.headers["Access-Control-Allow-Origin"] = "https://sistema-de-controle-financeiro-fron.vercel.app"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    return response, 200
+    
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
