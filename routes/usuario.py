@@ -51,7 +51,7 @@ def get_salario_usuario(id_usuario):
         conn = get_db()
         cursor = conn.cursor(dictionary=True)
         
-        query = "select salario from usuario where id_usuario = %s"
+        query = "select salario from Usuario where id_usuario = %s"
         cursor.execute(query, (id_usuario,))
         usuario = cursor.fetchone()
         
@@ -77,7 +77,7 @@ def trocar_nome(id_usuario):
 
         conn = get_db()
         cursor = conn.cursor()
-        query = "UPDATE usuario SET nome = %s WHERE id_usuario = %s"
+        query = "UPDATE Usuario SET nome = %s WHERE id_usuario = %s"
         cursor.execute(query, (novo_nome, id_usuario))
         conn.commit()
         cursor.close()
@@ -102,7 +102,7 @@ def trocar_senha(id_usuario):
 
         conn = get_db()
         cursor = conn.cursor()
-        query = "UPDATE usuario SET senha = %s WHERE id_usuario = %s"
+        query = "UPDATE Usuario SET senha = %s WHERE id_usuario = %s"
         cursor.execute(query, (senha_hash, id_usuario))
         conn.commit()
         cursor.close()
@@ -125,7 +125,7 @@ def verificar_email():
     db = get_db()
     cursor = db.cursor()
     
-    cursor.execute("select * from usuario where email = %s", (email,))
+    cursor.execute("select * from Usuario where email = %s", (email,))
     usuario_existente = cursor.fetchone()
     
     if usuario_existente:
@@ -145,7 +145,7 @@ def esqueceu_senha():
     db = get_db()
     cursor = db.cursor()
 
-    cursor.execute("SELECT * FROM usuario WHERE email = %s", (email,))
+    cursor.execute("SELECT * FROM Usuario WHERE email = %s", (email,))
     usuario_existente = cursor.fetchone()
 
     if not usuario_existente:
@@ -155,7 +155,7 @@ def esqueceu_senha():
 
     senha_hash = bcrypt.hashpw(nova_senha.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
-    cursor.execute("UPDATE usuario SET senha = %s WHERE email = %s", (senha_hash, email))
+    cursor.execute("UPDATE Usuario SET senha = %s WHERE email = %s", (senha_hash, email))
     db.commit()
     cursor.close()
     db.close()
