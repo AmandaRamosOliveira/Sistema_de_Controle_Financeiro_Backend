@@ -13,9 +13,10 @@ def adicionar_meta(data):
     
     periodo_meses = math.ceil(valor_final / valor) if valor > 0 else 0
 
-    query = """INSERT INTO Meta (descricaoMeta, valor, valor_final, periodo_meses, id_usuario)
-               VALUES (%s, %s, %s, %s, %s)"""
-    values = (descricaoMeta, valor, valor_final, periodo_meses, id_usuario)
+    query = """INSERT INTO Meta (descricaoMeta, valor, valor_final, periodo_meses, status, id_usuario)
+           VALUES (%s, %s, %s, %s, %s, %s)"""
+    values = (descricaoMeta, valor, valor_final, periodo_meses, "pendente", id_usuario)
+
 
     cursor.execute(query, values)
     conn.commit()
