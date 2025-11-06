@@ -9,7 +9,7 @@ def gerar_relatorio(id_usuario, mes, ano):
         from database import get_db
         conn = get_db()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT salario FROM usuario WHERE id_usuario = %s", (id_usuario,))
+        cursor.execute("SELECT salario FROM Usuario WHERE id_usuario = %s", (id_usuario,))
         user = cursor.fetchone()
         salario = float(user['salario']) if user else 0.0
         conn.close()
