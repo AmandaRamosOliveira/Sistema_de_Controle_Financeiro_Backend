@@ -32,7 +32,7 @@ class RelatorioModel:
                 ELSE 0
                 END
                ) AS total_meta
-               FROM meta
+               FROM Meta
                WHERE id_usuario = %s
              """
         cursor.execute(query_meta, (mes, ano, id_usuario))
