@@ -13,7 +13,7 @@ def adicionar_meta(data):
     
     periodo_meses = math.ceil(valor_final / valor) if valor > 0 else 0
 
-    query = """INSERT INTO meta (descricaoMeta, valor, valor_final, periodo_meses, id_usuario)
+    query = """INSERT INTO Meta (descricaoMeta, valor, valor_final, periodo_meses, id_usuario)
                VALUES (%s, %s, %s, %s, %s)"""
     values = (descricaoMeta, valor, valor_final, periodo_meses, id_usuario)
 
@@ -38,7 +38,7 @@ def adicionar_meta(data):
 def listar_metas():
     conn = get_db()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM meta")
+    cursor.execute("SELECT * FROM Meta")
     metas = cursor.fetchall()
     cursor.close()
     conn.close()
@@ -48,7 +48,7 @@ def listar_metas():
 def listar_metas_por_usuario(id_usuario):
     conn = get_db()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM meta WHERE id_usuario = %s", (id_usuario,))
+    cursor.execute("SELECT * FROM Meta WHERE id_usuario = %s", (id_usuario,))
     metas = cursor.fetchall()
     cursor.close()
     conn.close()
@@ -65,13 +65,13 @@ def atualizar_status(id_meta, novo_status):
         ano_conclusao = agora.year
         
         query =  """
-            UPDATE meta
+            UPDATE Meta
             SET status = %s, mes_conclusao = %s, ano_conclusao = %s
             WHERE id_meta = %s
         """
         cursor.execute(query, (novo_status,mes_conclusao, ano_conclusao, id_meta))
     else:
-        query= """UPDATE meta
+        query= """UPDATE Meta
                   SET status = %s, mes_conclusao = NULL, ano_conclusao= NULL
                   WHERE id_meta = %s"""
         cursor.execute(query,(novo_status, id_meta))
