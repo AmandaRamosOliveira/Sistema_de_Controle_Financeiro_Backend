@@ -40,7 +40,7 @@ def trocar_nome(id_usuario, novo_nome):
 def trocar_senha(id_usuario, nova_senha):
     conn = get_db()
     cursor = conn.cursor()
-    query = "update usuario set senha = %s where id_usuario = %s"
+    query = "update Usuario set senha = %s where id_usuario = %s"
     cursor.execute(query, (nova_senha, id_usuario))
     conn.commit()
     conn.close()
@@ -48,7 +48,7 @@ def trocar_senha(id_usuario, nova_senha):
 def esqueceu_senha(email, nova_senha):
     conn = get_db()
     cursor = conn.cursor()
-    query = "UPDATE usuario SET senha = %s WHERE email = %s"
+    query = "UPDATE Usuario SET senha = %s WHERE email = %s"
     cursor.execute(query, (nova_senha, email))
     conn.commit()
     conn.close()
